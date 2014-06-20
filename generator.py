@@ -8,7 +8,8 @@ import shutil
 import zipfile
 import time
 
-class xlsx_gen(object):
+
+class XlsxGen(object):
     """
     Class to generate simple xlsx file from a template.
     Template must contain a sheet named sheet1 and this sheet must contain at least 1 value (that will be deleted)
@@ -32,7 +33,7 @@ class xlsx_gen(object):
         self.tmp_strings_xml_file = self.tmp_dir + "/xl/sharedStrings.xml"
 
         if not zipfile.is_zipfile(file_in):
-            raise
+            raise Exception('file_in is not a valid xlsx file')
 
     def process_shared(self):
 
@@ -57,7 +58,7 @@ class xlsx_gen(object):
             for index, t_tmp in enumerate(ts):
                 text_content.append(t_tmp.text)
 
-            for key, value in self.dict.iteritems():
+            for key, value in self.dict.items():
 
                 text_index = None
 
@@ -97,7 +98,7 @@ class xlsx_gen(object):
             # Write file to archive
             self.zout.write(self.tmp_strings_xml_file, arcname="xl/sharedStrings.xml")
         else:
-            raise
+            raise Exception('file_in is not a valid xlsx file')
 
     @staticmethod
     def column_to_index(column):
@@ -150,7 +151,7 @@ class xlsx_gen(object):
         row = None
         v = None
 
-        for key, value in self.dict.iteritems():
+        for key, value in self.dict.items():
 
             row_number = value[4]
 
@@ -185,8 +186,8 @@ class xlsx_gen(object):
 
         # Updating dimension element. Optional, only allows Excel/Open Office to optimize
         # the horizontal / vertical scroll bar size. Not really time consuming though
-        min_row = self.dict.values()[0][4]
-        max_row = self.dict.values()[-1][4]
+        min_row = list(self.dict.values())[0][4]
+        max_row = list(self.dict.values())[-1][4]
 
         tmp_set = set()
         for cell_data in self.dict.values():
@@ -263,14 +264,14 @@ class xlsx_gen(object):
 
         # We will iterate over the cells of the dictionary and append them to the sheet1.xml file. It is important that
         # cells are correctly sorted by row, then by column. Excel wont display the data if the order is broken
-        tmp_dict=OrderedDict(sorted(self.dict.iteritems(), key=lambda t: (int(t[1][4]), t[1][3])))
+        tmp_dict=OrderedDict(sorted(self.dict.items(), key=lambda t: (int(t[1][4]), t[1][3])))
         self.dict = tmp_dict
 
         zin = zipfile.ZipFile(self.file_in, mode="r")
         zin.extractall(self.tmp_dir)
 
         # Check if we were passed a file-like object for output file
-        if isinstance(self.file_out, basestring):
+        if isinstance(self.file_out, str):
             filePassed = False
 
             # If not, delete output archive if it exists
