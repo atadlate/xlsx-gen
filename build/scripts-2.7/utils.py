@@ -4,6 +4,7 @@ from xml.etree.cElementTree import SubElement, parse
 from generator.generator import XlsxGen
 import os
 import time
+import sys
 from StringIO import StringIO
 import codecs
 import zipfile
@@ -60,7 +61,7 @@ def print_xml(parsed_dir, logfile=False):
     file_log.close()
 
 
-def demo(nb_execution=1):
+def demo(file_in, file_out, nb_execution=1):
 
     try:
         nb_exec = int(nb_execution)
@@ -74,8 +75,7 @@ def demo(nb_execution=1):
         # For performance profiling
         start = time.time()
 
-        xlsx = XlsxGen(file_in=os.path.join(os.path.pardir, "generator", "Template.xlsx"),
-                       file_out=os.path.join(os.path.pardir, "generated_file.xlsx"))
+        xlsx = XlsxGen(file_in=file_in, file_out=file_out)
 
         xlsx.write("Quizz title", "A", "1", 2)
         xlsx.write("Quizz date", "A", "2", 1)
@@ -118,13 +118,34 @@ def demo(nb_execution=1):
     mean_time /= nb_exec
     print("Mean time elapsed: {}s".format(mean_time))
 
-# Calling demo
-demo()
+if __name__ == "__main__":
 
-# Extracting content of the xlsx file to a subdirectory
-extract_all_xlsx()
+    usage = """
+    Usage : utils.py file_in [file_out, nb_excutions]
+    """
+    try:
+        file_in = sys.argv[1]
+    except:
+        print usage
+        sys.exit()
 
-# Printing a visual representation of the arborescence of all xml files from the xlsx archive.
-#   - Logfile to True = generate to File
-#   - Logfile to False = print to screen
-print_xml(os.path.join(os.path.pardir, "generated_file"), logfile=True)
+    try:
+        file_out = sys.argv[2]
+    except:
+        file_out = "generated-file.xlsx"
+
+    try:
+        nb_execution = int(sys.argv[3])
+    except:
+        nb_execution = 1
+
+    # Calling demo
+    demo(file_in, file_out, nb_execution)
+
+    # Extracting content of the xlsx file to a subdirectory
+    extract_all_xlsx()
+
+    # Printing a visual representation of the arborescence of all xml files from the xlsx archive.
+    #   - Logfile to True = generate to File
+    #   - Logfile to False = print to screen
+    print_xml(os.path.join(os.path.pardir, "generated_file"), logfile=True)
