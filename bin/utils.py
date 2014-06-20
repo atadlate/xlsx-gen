@@ -10,8 +10,8 @@ import codecs
 import zipfile
 import shutil
 
-def extract_all_xlsx():
-    for dir_tuple in os.walk('.'):
+def extract_all_xlsx(dir):
+    for dir_tuple in os.walk(dir):
         for file in dir_tuple[2]:
             file_name_wo_ext , file_ext = os.path.splitext(file)
             if file_ext == '.xlsx':
@@ -143,9 +143,11 @@ if __name__ == "__main__":
     demo(file_in, file_out, nb_execution)
 
     # Extracting content of the xlsx file to a subdirectory
-    extract_all_xlsx()
+    dir_out = os.path.dirname(file_out)
+    extract_all_xlsx(dir_out)
 
     # Printing a visual representation of the arborescence of all xml files from the xlsx archive.
     #   - Logfile to True = generate to File
     #   - Logfile to False = print to screen
-    print_xml(os.path.join(os.path.pardir, "generated_file"), logfile=True)
+    dir_extract = os.path.splitext(file_out)[0]
+    print_xml(dir_extract, logfile=True)
