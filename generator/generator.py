@@ -33,7 +33,7 @@ class XlsxGen(object):
         self.tmp_strings_xml_file = self.tmp_dir + "/xl/sharedStrings.xml"
 
         if not zipfile.is_zipfile(file_in):
-            raise Exception('file_in is not a valid xlsx file')
+            raise Exception(file_in + ' is not a valid xlsx file')
 
     def process_shared(self):
 
@@ -98,7 +98,7 @@ class XlsxGen(object):
             # Write file to archive
             self.zout.write(self.tmp_strings_xml_file, arcname="xl/sharedStrings.xml")
         else:
-            raise Exception('file_in is not a valid xlsx file')
+            raise Exception(self.file_in + ' is not a valid xlsx file')
 
     @staticmethod
     def column_to_index(column):

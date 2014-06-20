@@ -1,7 +1,7 @@
 __author__ = 'mcharbit'
 
 from xml.etree.cElementTree import SubElement, parse
-from generator import XlsxGen
+from generator.generator import XlsxGen
 import os
 import time
 from StringIO import StringIO
@@ -74,7 +74,8 @@ def demo(nb_execution=1):
         # For performance profiling
         start = time.time()
 
-        xlsx = XlsxGen(file_in="Template.xlsx", file_out="generated_file.xlsx")
+        xlsx = XlsxGen(file_in=os.path.join(os.path.pardir, "generator", "Template.xlsx"),
+                       file_out=os.path.join(os.path.pardir, "generated_file.xlsx"))
 
         xlsx.write("Quizz title", "A", "1", 2)
         xlsx.write("Quizz date", "A", "2", 1)
@@ -126,4 +127,4 @@ extract_all_xlsx()
 # Printing a visual representation of the arborescence of all xml files from the xlsx archive.
 #   - Logfile to True = generate to File
 #   - Logfile to False = print to screen
-print_xml("generated_file", logfile=True)
+print_xml(os.path.join(os.path.pardir, "generated_file"), logfile=True)

@@ -1,0 +1,12 @@
+README.txt
+setup.py
+XlsxGen.egg-info/PKG-INFO
+XlsxGen.egg-info/SOURCES.txt
+XlsxGen.egg-info/dependency_links.txt
+XlsxGen.egg-info/top_level.txt
+bin/utils.py
+generator/Template.xlsx
+generator/Template_no_visible_styles.xlsx
+generator/Template_visible_styles.xlsx
+generator/__init__.py
+generator/generator.py
