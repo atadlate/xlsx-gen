@@ -1,6 +1,6 @@
 __author__ = 'mcharbit'
 
-from xml.etree.cElementTree import SubElement, parse
+from xml.etree.cElementTree import parse
 from generator.generator import XlsxGen
 import os
 import time
